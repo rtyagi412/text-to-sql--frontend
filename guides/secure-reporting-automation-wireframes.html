@@ -1,0 +1,503 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secure Reporting Automation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>body{margin:0;background:#DAD7CE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1C1B18}
+.toc{position:sticky;top:0;z-index:5;background:#1C1B18;color:#fff;padding:10px 16px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px}
+.toc a{color:#fff;text-decoration:none}.toc a:hover{text-decoration:underline}.toc strong{margin-right:4px}
+.grp-title{max-width:960px;margin:32px auto 8px;padding:0 16px;font-size:22px;font-weight:600}
+.scr-title{max-width:960px;margin:16px auto 8px;padding:0 16px;font-size:15px;font-weight:500;color:#4A4740}
+.screen{scroll-margin-top:56px}
+.frame{padding:0 16px 16px;overflow-x:auto}.frame>div{margin:0 auto;box-shadow:0 2px 12px rgba(0,0,0,.15);border-radius:12px;overflow:hidden}
+.frame a{color:#1C1B18}.frame a:hover{color:#2952CC}
+input::placeholder,textarea::placeholder{color:#8A867C}</style></head><body><nav class="toc" aria-label="Screens"><strong>Secure Reporting Automation</strong><a href="#Main">Look up ticket</a><a href="#A2-Ticket">Ticket</a><a href="#A3-Analysis">Analysis</a><a href="#A4-Mapping">Mapping</a><a href="#A5-SQL">SQL review</a><a href="#A6-Approved">Approved</a><a href="#B1-Subscribe">Subscribe report</a><a href="#B4-Confirmation">Report scheduled</a></nav><div class="grp-title" role="heading" aria-level="1">Generate SQL</div><section class="screen" id="Main"><div class="scr-title">Look up ticket</div><div class="frame">
+
+<div style="width: 960px; height: 410px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<div style="display: flex; gap: 8px">
+<input id="ritm" placeholder="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 2px solid #1C1B18; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">1</span>Ticket</span>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">2</span>Analysis</span>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">3</span>Mapping</span>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">4</span>SQL</span>
+</nav>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+<div style="border: 1.5px dashed #CFCBC0; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 500">Read the ticket</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.45">What was asked for, in the requester’s words.</span></div>
+<div style="border: 1.5px dashed #CFCBC0; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 500">Analyze</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.45">Fields and filters, with any questions first.</span></div>
+<div style="border: 1.5px dashed #CFCBC0; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 500">Map columns</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.45">Each one matched to a table and column.</span></div>
+<div style="border: 1.5px dashed #CFCBC0; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 500">Generate &amp; approve</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.45">Review the SQL and sign it off for scheduling.</span></div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="A2-Ticket"><div class="scr-title">Ticket</div><div class="frame">
+
+<div style="width: 960px; height: 595px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<a href="#Main" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; margin-right: -8px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #1C1B18; text-decoration: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Start over</a>
+</div>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<a href="#A2-Ticket" aria-current="step" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid #1C1B18; font-size: 14px; font-weight: 500; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1C1B18; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">1</span>Ticket</a>
+<a href="#A3-Analysis" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px solid #1C1B18; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">2</span>Analysis</a>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">3</span>Mapping</span>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">4</span>SQL</span>
+</nav>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; font-weight: 500; color: #5F5B52">RITM0040015</span>
+<h3 style="margin: 0; font-size: 17px; font-weight: 600">Sample account data request</h3>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 128px minmax(0, 1fr); column-gap: 24px; row-gap: 16px; font-size: 14px">
+<dt style="color: #5F5B52">Output fields</dt>
+<dd style="margin: 0; line-height: 1.55">Account Number, Customer Name, Branch, Balance, Last Transaction Date</dd>
+<dt style="color: #5F5B52">Report criteria</dt>
+<dd style="margin: 0; line-height: 1.55">Savings accounts only. Active branches only.</dd>
+<dt style="color: #5F5B52">Description</dt>
+<dd style="margin: 0; line-height: 1.55">Monthly review of accounts with no transactions in the last 180 days, for the branch operations team.</dd>
+<dt style="color: #5F5B52">Report usage</dt>
+<dd style="margin: 0; line-height: 1.55; color: #6F6B62">Not provided</dd>
+</dl>
+<div style="display: flex">
+<a href="#A3-Analysis" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Analyze ticket<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="A3-Analysis"><div class="scr-title">Analysis</div><div class="frame">
+
+<div style="width: 960px; height: 805px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<a href="#Main" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; margin-right: -8px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #1C1B18; text-decoration: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Start over</a>
+</div>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<a href="#A2-Ticket" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Ticket</a>
+<a href="#A3-Analysis" aria-current="step" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid #1C1B18; font-size: 14px; font-weight: 500; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1C1B18; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">2</span>Analysis</a>
+<a href="#A4-Mapping" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px solid #1C1B18; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">3</span>Mapping</a>
+<span aria-disabled="true" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #6F6B62"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px dashed #A29E94; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">4</span>SQL</span>
+</nav>
+
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+<span style="font-size: 12px; font-weight: 500; padding: 3px 8px; border-radius: 6px; background: #1C1B18; color: #FFFFFF">READY</span>
+<span style="font-size: 13px; color: #5F5B52">Re-analyzed with your note. No open questions.</span>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #5F5B52">Output fields <span style="background: #EFEDE6; border-radius: 999px; padding: 2px 7px; font-size: 11px; letter-spacing: 0">5</span></h3>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px">
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 6px; padding: 5px 10px; font-size: 14px; font-weight: 500">Account Number</li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 6px; padding: 5px 10px; font-size: 14px; font-weight: 500">Customer Name</li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 6px; padding: 5px 10px; font-size: 14px; font-weight: 500">Branch</li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 6px; padding: 5px 10px; font-size: 14px; font-weight: 500">Balance</li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 6px; padding: 5px 10px; font-size: 14px; font-weight: 500">Last Transaction Date</li>
+</ul>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #5F5B52">Filters <span style="background: #EFEDE6; border-radius: 999px; padding: 2px 7px; font-size: 11px; letter-spacing: 0">4</span></h3>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px; padding: 10px 12px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px"><span><strong style="font-weight: 500">Account Type</strong> <span style="color: #5F5B52">is</span> <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">SAVINGS</code></span></li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px; padding: 10px 12px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px"><span><strong style="font-weight: 500">Branch Status</strong> <span style="color: #5F5B52">is</span> <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">ACTIVE</code></span></li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px; padding: 10px 12px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px"><span><strong style="font-weight: 500">Last Transaction Date</strong> <span style="color: #5F5B52">is less than</span> <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">last 180 days</code></span><span style="flex-shrink: 0; border: 1px solid #CFCBC0; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 500">DESCRIPTION</span></li>
+<li style="border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px; padding: 10px 12px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px"><span><strong style="font-weight: 500">Account Status</strong> <span style="color: #5F5B52">is not</span> <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">CLOSED</code></span></li>
+</ul>
+</section>
+
+<div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 10px; padding: 12px">
+<label for="context" style="font-size: 14px; font-weight: 500">Additional context <span style="font-weight: 400; color: #5F5B52">(optional)</span></label>
+<textarea id="context" rows="2" style="box-sizing: border-box; width: 100%; border: 1px solid #CFCBC0; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF; resize: vertical">Exclude closed accounts.</textarea>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<a href="#A3-Analysis" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; box-sizing: border-box">Re-analyze</a>
+<a href="#A4-Mapping" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Map columns<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<span style="font-size: 12px; color: #5F5B52; margin-left: auto">Ctrl / ⌘ + Enter re-analyzes</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="A4-Mapping"><div class="scr-title">Mapping</div><div class="frame">
+
+<div style="width: 960px; height: 915px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<a href="#Main" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; margin-right: -8px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #1C1B18; text-decoration: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Start over</a>
+</div>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<a href="#A2-Ticket" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Ticket</a>
+<a href="#A3-Analysis" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Analysis</a>
+<a href="#A4-Mapping" aria-current="step" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid #1C1B18; font-size: 14px; font-weight: 500; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1C1B18; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">3</span>Mapping</a>
+<a href="#A5-SQL" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 1.5px solid #1C1B18; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">4</span>SQL</a>
+</nav>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #5F5B52">Mapped columns <span style="background: #EFEDE6; border-radius: 999px; padding: 2px 7px; font-size: 11px; letter-spacing: 0">9</span></h3>
+<div style="border: 1px solid #DDD9CF; border-radius: 8px; overflow: hidden; font-size: 14px">
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 8px 12px; background: #F3F1EB; border-bottom: 1px solid #DDD9CF; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #5F5B52"><span>Table</span><span>Column</span><span>Requested as</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">AccountNumber</code><span style="color: #5F5B52">Account Number</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Customers</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">FullName</code><span style="color: #5F5B52">Customer Name</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Branches</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">BranchName</code><span style="color: #5F5B52">Branch</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">LedgerBalance</code><span style="color: #5F5B52">Balance</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">LastTxnDate</code><span style="color: #5F5B52">Last Transaction Date</span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">AccountType</code><span style="color: #5F5B52; display: flex; flex-wrap: wrap; align-items: center; gap: 6px">Account Type <span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 6px; font-size: 12px; font-weight: 500; color: #1C1B18">Filter</span> is <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #EFEDE6; border-radius: 4px; padding: 2px 6px; color: #1C1B18">SAVINGS</code></span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Branches</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">Status</code><span style="color: #5F5B52; display: flex; flex-wrap: wrap; align-items: center; gap: 6px">Branch Status <span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 6px; font-size: 12px; font-weight: 500; color: #1C1B18">Filter</span> is <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #EFEDE6; border-radius: 4px; padding: 2px 6px; color: #1C1B18">ACTIVE</code></span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; border-bottom: 1px solid #E6E3DA; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">LastTxnDate</code><span style="color: #5F5B52; display: flex; flex-wrap: wrap; align-items: center; gap: 6px">Last Transaction Date <span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 6px; font-size: 12px; font-weight: 500; color: #1C1B18">Filter</span> is less than <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #EFEDE6; border-radius: 4px; padding: 2px 6px; color: #1C1B18">last 180 days</code></span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 16px; padding: 10px 12px; align-items: center"><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">dbo.Accounts</code><code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500">Status</code><span style="color: #5F5B52; display: flex; flex-wrap: wrap; align-items: center; gap: 6px">Account Status <span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 6px; font-size: 12px; font-weight: 500; color: #1C1B18">Filter</span> is not <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #EFEDE6; border-radius: 4px; padding: 2px 6px; color: #1C1B18">CLOSED</code></span></div>
+</div>
+</section>
+
+<div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 10px; padding: 12px">
+<label for="map-context" style="font-size: 14px; font-weight: 500">Additional context <span style="font-weight: 400; color: #5F5B52">(optional)</span></label>
+<textarea id="map-context" rows="2" placeholder="Steer the mapping and the SQL, e.g. “Use the GL balance for Balance” or “Sort by Account Number”" style="box-sizing: border-box; width: 100%; border: 1px solid #CFCBC0; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF; resize: vertical"></textarea>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<a href="#A4-Mapping" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; box-sizing: border-box">Re-map columns</a>
+<a href="#A5-SQL" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Generate SQL<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<span style="font-size: 12px; color: #5F5B52; margin-left: auto">This note is carried into the SQL step too</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="A5-SQL"><div class="scr-title">SQL review</div><div class="frame">
+
+<div style="width: 960px; height: 975px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<a href="#Main" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; margin-right: -8px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #1C1B18; text-decoration: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Start over</a>
+</div>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<a href="#A2-Ticket" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Ticket</a>
+<a href="#A3-Analysis" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Analysis</a>
+<a href="#A4-Mapping" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Mapping</a>
+<a href="#A5-SQL" aria-current="step" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid #1C1B18; font-size: 14px; font-weight: 500; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1C1B18; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">4</span>SQL</a>
+</nav>
+
+<div style="position: relative; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px">
+<button type="button" style="position: absolute; top: 8px; right: 8px; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid #CFCBC0; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #1C1B18"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="14" height="14" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>Copy</button>
+<pre style="margin: 0; padding: 14px 110px 14px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.65; color: #1C1B18; white-space: pre; overflow: hidden">SELECT
+    a.AccountNumber  AS [Account Number],
+    c.FullName       AS [Customer Name],
+    b.BranchName     AS [Branch],
+    a.LedgerBalance  AS [Balance],
+    a.LastTxnDate    AS [Last Transaction Date]
+FROM dbo.Accounts a
+JOIN dbo.Customers c ON c.CustomerId = a.CustomerId
+JOIN dbo.Branches  b ON b.BranchId   = a.BranchId
+WHERE a.AccountType = 'SAVINGS'
+  AND b.Status      = 'ACTIVE'
+  AND a.LastTxnDate &lt; DATEADD(DAY, -180, GETDATE())
+  AND a.Status      &lt;&gt; 'CLOSED'
+ORDER BY b.BranchName, a.AccountNumber;</pre>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; border: 1px solid #DDD9CF; border-radius: 10px; padding: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="approve-note" style="font-size: 14px; font-weight: 500">Reviewer note <span style="font-weight: 400; color: #5F5B52">(optional)</span></label>
+<input id="approve-note" placeholder="e.g. Checked the joins against the ticket" autocomplete="off" style="height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<a href="#A6-Approved" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Approve SQL</a>
+<span style="font-size: 14px; color: #5F5B52">Approving records it against the ticket so it can be scheduled.</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 10px; padding: 12px">
+<label for="sql-context" style="font-size: 14px; font-weight: 500">Additional context <span style="font-weight: 400; color: #5F5B52">(optional)</span></label>
+<textarea id="sql-context" rows="2" placeholder="Answer a question, describe what went wrong, or say what to change, e.g. “Exclude closed accounts”" style="box-sizing: border-box; width: 100%; border: 1px solid #CFCBC0; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF; resize: vertical"></textarea>
+<div style="display: flex; align-items: center; gap: 8px">
+<a href="#A5-SQL" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Regenerate SQL</a>
+<span style="font-size: 12px; color: #5F5B52; margin-left: auto">Regenerating clears any approval of this SQL</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="A6-Approved"><div class="scr-title">Approved</div><div class="frame">
+
+<div style="width: 960px; height: 995px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; display: flex; flex-direction: column">
+<form style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<a href="#Main" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; margin-right: -8px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #1C1B18; text-decoration: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Start over</a>
+</div>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 40px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<a href="#A2-Ticket" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Look up</a>
+</div>
+</form>
+<div style="height: 1px; background: #E6E3DA"></div>
+<div style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Steps" style="display: flex; gap: 4px; border-bottom: 1px solid #E6E3DA">
+<a href="#A2-Ticket" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Ticket</a>
+<a href="#A3-Analysis" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Analysis</a>
+<a href="#A4-Mapping" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; font-size: 14px; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>Mapping</a>
+<a href="#A6-Approved" aria-current="step" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid #1C1B18; font-size: 14px; font-weight: 500; color: #1C1B18; text-decoration: none"><span style="width: 20px; height: 20px; border-radius: 10px; background: #1E7A4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>SQL</a>
+</nav>
+
+<div style="position: relative; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 8px">
+<button type="button" style="position: absolute; top: 8px; right: 8px; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid #CFCBC0; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #1C1B18"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Copied</button>
+<pre style="margin: 0; padding: 14px 110px 14px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.65; color: #1C1B18; white-space: pre; overflow: hidden">SELECT
+    a.AccountNumber AS [Account Number],
+    c.FullName AS [Customer Name],
+    b.BranchName AS [Branch],
+    a.LedgerBalance AS [Balance],
+    a.LastTxnDate AS [Last Transaction Date]
+FROM dbo.Accounts AS a
+    INNER JOIN dbo.Customers AS c ON c.CustomerId = a.CustomerId
+    INNER JOIN dbo.Branches AS b ON b.BranchId = a.BranchId
+WHERE a.AccountType = 'SAVINGS'
+    AND b.Status = 'ACTIVE'
+    AND a.LastTxnDate &lt; DATEADD(DAY, -180, GETDATE())
+    AND a.Status &lt;&gt; 'CLOSED'
+ORDER BY b.BranchName, a.AccountNumber;</pre>
+</div>
+
+<div role="status" style="display: flex; flex-direction: column; gap: 12px; border: 1px solid #8CC3A3; background: #E8F4EC; border-radius: 10px; padding: 14px 16px; font-size: 14px">
+<p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+Approved
+<span style="border: 1px solid #8CC3A3; background: #FFFFFF; border-radius: 6px; padding: 1px 8px; font-size: 12px">Version 2</span>
+<span style="font-weight: 400; color: #3F4A42">by user@example.com on 28/09/2026, 10:42, replacing the earlier approval</span>
+</p>
+<p style="margin: 0; color: #3F4A42; line-height: 1.5">The reformatted SQL above is what was saved. This ticket can now be scheduled on Subscribe report.</p>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #3F4A42">Tables</span>
+<code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">dbo.Accounts</code>
+<code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">dbo.Customers</code>
+<code style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #FFFFFF; border-radius: 4px; padding: 2px 6px">dbo.Branches</code>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 4px">
+<a href="#B1-Subscribe" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none">Schedule this report<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<span style="font-size: 13px; color: #3F4A42">Opens Subscribe report with RITM0040015 already looked up.</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid #DDD9CF; background: #F6F4EF; border-radius: 10px; padding: 12px">
+<label for="sql-context" style="font-size: 14px; font-weight: 500">Additional context <span style="font-weight: 400; color: #5F5B52">(optional)</span></label>
+<textarea id="sql-context" rows="2" placeholder="Answer a question, describe what went wrong, or say what to change, e.g. “Exclude closed accounts”" style="box-sizing: border-box; width: 100%; border: 1px solid #CFCBC0; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF; resize: vertical"></textarea>
+<div style="display: flex; align-items: center; gap: 8px">
+<a href="#A5-SQL" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Regenerate SQL</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section><div class="grp-title" role="heading" aria-level="1">Subscribe report</div><section class="screen" id="B1-Subscribe"><div class="scr-title">Subscribe report</div><div class="frame">
+
+<div style="width: 960px; height: 950px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<form style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">1. Approved query</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ritm" style="font-size: 14px; font-weight: 500">RITM number</label>
+<div style="display: flex; gap: 8px">
+<input id="ritm" value="RITM0040015" autocomplete="off" style="flex-grow: 1; height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+<button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font: inherit; font-size: 14px; font-weight: 500; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Find query</button>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; border: 1px solid #8CC3A3; background: #E8F4EC; border-radius: 10px; padding: 10px 14px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+<span style="font-size: 14px"><strong style="font-weight: 500">Sample account data request</strong> <span style="color: #3F4A42">· Approved 28 Sep 2026</span></span>
+</div>
+</div>
+
+<div style="height: 1px; background: #E6E3DA"></div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">2. Report</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="report_name" style="font-size: 14px; font-weight: 500">Report name</label>
+<input id="report_name" value="Sample account data request" autocomplete="off" style="height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: #1C1B18; background: #FFFFFF">
+</div>
+</div>
+
+<div style="height: 1px; background: #E6E3DA"></div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">3. Schedule</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="frequency" style="font-size: 14px; font-weight: 500">Repeats</label>
+<select id="frequency" style="height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px; background: #FFFFFF; color: #1C1B18"><option>Once</option><option>Daily</option><option selected>Weekly</option><option>Monthly</option></select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="start" style="font-size: 14px; font-weight: 500">First run</label>
+<input id="start" value="Mon 05/10/2026, 08:00" style="height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; background: #FFFFFF; color: #1C1B18">
+</div>
+</div>
+</div>
+
+<div style="height: 1px; background: #E6E3DA"></div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">4. Delivery</h2>
+<fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+<legend style="padding: 0; margin-bottom: 6px; font-size: 14px; font-weight: 500">Delivery method</legend>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label style="display: flex; align-items: flex-start; gap: 10px; border: 2px solid #1C1B18; border-radius: 10px; padding: 14px; background: #FFFFFF; cursor: pointer">
+<input type="radio" name="delivery" value="email" checked style="width: 18px; height: 18px; margin: 1px 0 0; accent-color: #1C1B18; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 500">Email</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.4">Send the report to the recipients below on every run.</span></span>
+</label>
+<label style="display: flex; align-items: flex-start; gap: 10px; border: 1px solid #CFCBC0; border-radius: 10px; padding: 15px; background: #FFFFFF; cursor: pointer">
+<input type="radio" name="delivery" value="subscription" style="width: 18px; height: 18px; margin: 1px 0 0; accent-color: #1C1B18; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 500">Set subscription</span><span style="font-size: 13px; color: #5F5B52; line-height: 1.4">Publish the report and create a subscription in the reporting portal.</span></span>
+</label>
+</div>
+</fieldset>
+<div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="recipients" style="font-size: 14px; font-weight: 500">Recipients</label>
+<div style="min-height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 6px 8px; display: flex; flex-wrap: nowrap; overflow: hidden; align-items: center; gap: 6px; background: #FFFFFF">
+<span style="display: inline-flex; align-items: center; background: #EFEDE6; border-radius: 6px; padding: 3px 8px; font-size: 13px; white-space: nowrap">ops.north@example.com</span>
+<span style="display: inline-flex; align-items: center; background: #EFEDE6; border-radius: 6px; padding: 3px 8px; font-size: 13px; white-space: nowrap">branch.ops@example.com</span>
+<input id="recipients" style="flex-grow: 1; min-width: 24px; width: 24px; border: 0; outline: none; font: inherit; font-size: 14px; padding: 2px; background: transparent; color: #1C1B18">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="render_format" style="font-size: 14px; font-weight: 500">Format</label>
+<select id="render_format" style="height: 44px; box-sizing: border-box; border: 1px solid #CFCBC0; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px; background: #FFFFFF; color: #1C1B18"><option selected>In the email body</option><option>PDF attachment</option><option>Excel attachment</option><option>CSV attachment</option></select>
+</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 16px; border-top: 1px solid #E6E3DA; padding-top: 20px">
+<span style="flex-grow: 1; font-size: 14px; color: #4A4740">Weekly on Monday at 8:00 AM, starting Oct 5, 2026 · Email to 2 recipients</span>
+<a href="#B4-Confirmation" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 20px; border-radius: 8px; background: #1C1B18; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Schedule report</a>
+</div>
+</form>
+</main>
+</div>
+</div>
+</div></section><section class="screen" id="B4-Confirmation"><div class="scr-title">Report scheduled</div><div class="frame">
+
+<div style="width: 960px; height: 550px; display: flex; background: #FBFAF7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1C1B18">
+
+
+<div style="flex-grow: 1; background: #FBFAF7; display: flex; flex-direction: column; overflow: hidden">
+<main style="width: 896px; align-self: center; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 32px">
+
+<section style="background: #FFFFFF; border: 1px solid #DDD9CF; border-radius: 12px; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Report scheduled</h2>
+</div>
+<p style="margin: 0; font-size: 14px; color: #5F5B52; line-height: 1.5">The report is published in SSRS and the email subscription is active.</p>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 128px minmax(0, 1fr); column-gap: 24px; row-gap: 16px; font-size: 14px">
+<dt style="color: #5F5B52">Report</dt>
+<dd style="margin: 0; display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 500">Sample account data request</span><a href="#B4-Confirmation" style="display: inline-flex; align-items: center; gap: 4px; color: #2952CC">Open in the SSRS portal<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></dd>
+<dt style="color: #5F5B52">Ticket</dt>
+<dd style="margin: 0">RITM0040015</dd>
+<dt style="color: #5F5B52">Schedule</dt>
+<dd style="margin: 0">Weekly on Monday at 8:00 AM, starting Oct 5, 2026</dd>
+<dt style="color: #5F5B52">Delivery</dt>
+<dd style="margin: 0">Email</dd>
+<dt style="color: #5F5B52">Recipients</dt>
+<dd style="margin: 0; display: flex; flex-wrap: wrap; gap: 6px"><span style="background: #EFEDE6; border-radius: 6px; padding: 2px 8px">ops.north@example.com</span><span style="background: #EFEDE6; border-radius: 6px; padding: 2px 8px">branch.ops@example.com</span></dd>
+<dt style="color: #5F5B52">Format</dt>
+<dd style="margin: 0">In the email body</dd>
+<dt style="color: #5F5B52">Columns</dt>
+<dd style="margin: 0; display: flex; flex-wrap: wrap; gap: 6px"><span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 500">Account Number</span><span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 500">Customer Name</span><span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 500">Branch</span><span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 500">Balance</span><span style="border: 1px solid #CFCBC0; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 500">Last Transaction Date</span></dd>
+<dt style="color: #5F5B52">Status</dt>
+<dd style="margin: 0"><span style="background: #1C1B18; color: #FFFFFF; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 500">Active</span></dd>
+</dl>
+<div style="display: flex">
+<a href="#B1-Subscribe" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #CFCBC0; background: #FFFFFF; color: #1C1B18; font-size: 14px; font-weight: 500; text-decoration: none; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Schedule another report</a>
+</div>
+</section>
+</main>
+</div>
+</div>
+</div></section></body></html>
